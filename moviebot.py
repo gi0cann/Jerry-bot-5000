@@ -30,7 +30,7 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.group()
 async def movie(ctx):
-    """Add, list, removes, and randomly selects moive from movie list"""
+    """Watch party movie list commands. Type "!help movie" for addition info."""
     if ctx.invoked_subcommand is None:
         await ctx.send("Missing subcommand")
 
