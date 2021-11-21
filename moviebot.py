@@ -30,18 +30,18 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.group()
 async def movie(ctx):
-    """Watch party movie list commands. Type "!help movie" for addition info."""
+    """Watch party movie list commands"""
     if ctx.invoked_subcommand is None:
         await ctx.send("Missing subcommand")
 
 @movie.command(name="list")
 async def list_movies(ctx):
-    """List movies added to movie list."""
+    """List movies added to movie list"""
     await ctx.send(f"```{NEWLINE.join(moviesdb.get('movies'))}```")
 
 @movie.command(name="add")
 async def add_movie(ctx, *movie_name):
-    """Add movie to movie list."""
+    """Add movie to movie list"""
     movie = " ".join(movie_name)
     print(f"movie: {movie}")
     if movie not in moviesdb.get("movies"):
@@ -54,7 +54,7 @@ async def add_movie(ctx, *movie_name):
 
 @movie.command(name="del")
 async def delete_movie(ctx, *movie_name):
-    """Remove a movie from movie list."""
+    """Remove a movie from movie list"""
     print(ctx.author.id)
     if ctx.author.id == 159128365079592960:
         movie = " ".join(movie_name)
@@ -75,7 +75,7 @@ async def delete_movie(ctx, *movie_name):
 
 @movie.command(name="random")
 async def pick_random_movie(ctx):
-    """Pick a random movie from movie list."""
+    """Pick a random movie from movie list"""
     shuffled = moviesdb.get("movies")
     random.shuffle(shuffled)
     random.shuffle(shuffled)
