@@ -7,6 +7,14 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
+def clean_input(in_str):
+    in_split = in_str.split(" ")
+    result = list()
+    for word in in_split:
+        if " " not in word and len(word) != 0:
+            result.append(word)
+    return " ".join(result)
+
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -42,15 +50,19 @@ async def list_movies(ctx):
 @movie.command(name="add")
 async def add_movie(ctx, *movie_name):
     """Add movie to movie list"""
-    movie = " ".join(movie_name)
+    movie = clean_input(" ".join(movie_name))
     print(f"movie: {movie}")
-    if movie not in moviesdb.get("movies"):
-        moviesdb.get("movies").append(movie)
-        await ctx.send(f"{movie} added to movie list")
-        fd = open("movies.json", "w")
-        json.dump(moviesdb, fd)
-        fd.close()
-        await ctx.send(f"{ctx.author} added {movie} to movie list")
+    movies = moviesdb.get("movies")
+    for m in movies:
+        if m.upper() == movie.upper():
+            await ctx.send(f"{movie} already added to movie list")
+            return None
+    moviesdb.get("movies").append(movie)
+    await ctx.send(f"{movie} added to movie list")
+    fd = open("movies.json", "w")
+    json.dump(moviesdb, fd)
+    fd.close()
+    await ctx.send(f"{ctx.author} added {movie} to movie list")
 
 @movie.command(name="del")
 async def delete_movie(ctx, *movie_name):
